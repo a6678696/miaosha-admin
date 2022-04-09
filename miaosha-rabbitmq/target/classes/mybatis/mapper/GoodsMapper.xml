@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ledao.mapper.GoodsMapper">
+    <resultMap id="BaseResultMap" type="com.ledao.entity.Goods">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
+        <result column="detail" jdbcType="LONGVARCHAR" property="detail"/>
+    </resultMap>
+
+    <select id="findById" parameterType="integer" resultMap="BaseResultMap">
+        select *
+        from t_goods
+        where id = #{id}
+    </select>
+
+    <update id="reduceStock" parameterType="integer">
+        update t_goods
+        set stock=stock - 1
+        where id = #{id}
+    </update>
+</mapper>

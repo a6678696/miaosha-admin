@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="miaosha-user" />
+        <module name="miaosha-rabbitmq" />
+        <module name="miaosha-order1" />
+        <module name="miaosha-order2" />
+        <module name="miaosha-gateway" />
+        <module name="miaosha-common" />
+        <module name="miaosha-goods" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="miaosha-feign" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

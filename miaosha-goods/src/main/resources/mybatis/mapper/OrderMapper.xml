@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ledao.mapper.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.ledao.entity.Order">
+        <!--@mbg.generated-->
+        <!--@Table t_order-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="createTime" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="goodsId" jdbcType="INTEGER" property="goodsId"/>
+        <result column="miaoShaGoodsId" javaType="integer" property="miaoShaGoodsId"/>
+        <result column="payStatus" jdbcType="INTEGER" property="payStatus"/>
+        <result column="num" jdbcType="INTEGER" property="num"/>
+        <result column="userId" javaType="integer" property="userId"/>
+        <result column="price" javaType="double" property="price"/>
+        <association property="goods" column="goodsId" javaType="com.ledao.entity.Goods"
+                     select="com.ledao.mapper.GoodsMapper.findById"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, createTime, goodsId, payStatus, num, userId, price, miaoShaGoodsId
+    </sql>
+
+    <select id="list" parameterType="map" resultMap="BaseResultMap">
+        select *
+        from t_order
+        <where>
+            <if test="userId != null and userId != ''">
+                and userId = #{userId}
+            </if>
+        </where>
+        <if test="start != null and size != null">
+            limit #{start},#{size}
+        </if>
+    </select>
+
+    <select id="findByUserIdAndMiaoShaGoodsId" parameterType="map" resultType="com.ledao.entity.Order">
+        select *
+        from t_order
+        where userId = #{userId}
+          and miaoShaGoodsId = #{miaoShaGoodsId}
+    </select>
+
+    <insert id="add" parameterType="com.ledao.entity.Order">
+        insert into t_order (createTime, goodsId, payStatus, num, userId, price, miaoShaGoodsId)
+        values (now(), #{goodsId}, #{payStatus}, #{num}, #{userId}, #{price}, #{miaoShaGoodsId});
+    </insert>
+</mapper>

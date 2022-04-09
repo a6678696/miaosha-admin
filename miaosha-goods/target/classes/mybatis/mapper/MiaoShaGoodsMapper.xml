@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ledao.mapper.MiaoShaGoodsMapper">
+    <resultMap id="BaseResultMap" type="com.ledao.entity.MiaoShaGoods">
+        <!--@mbg.generated-->
+        <!--@Table t_miaosha_goods-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="goodsId" jdbcType="INTEGER" property="goodsId"/>
+        <result column="price" jdbcType="DOUBLE" property="price"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
+        <result column="startTime" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="endTime" jdbcType="TIMESTAMP" property="endTime"/>
+        <association property="goods" column="goodsId" javaType="com.ledao.entity.Goods"
+                     select="com.ledao.mapper.GoodsMapper.findById"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, goodsId, price, stock, startTime, endTime
+    </sql>
+
+    <select id="listAllNow" resultMap="BaseResultMap">
+        SELECT *
+        FROM t_miaosha_goods
+        WHERE startTime &lt;= NOW()
+          AND endTime &gt;= NOW()
+          AND stock > 0
+        order by startTime desc;
+    </select>
+
+    <select id="findById" parameterType="integer" resultMap="BaseResultMap">
+        select *
+        from t_miaosha_goods
+        where id = #{id}
+    </select>
+
+    <update id="reduceStock" parameterType="integer">
+        update t_miaosha_goods
+        set stock=stock - 1
+        where id = #{id}
+          and stock > 0;
+    </update>
+</mapper>
