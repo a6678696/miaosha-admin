@@ -7,6 +7,7 @@ import com.ledao.entity.Order;
 import com.ledao.mapper.GoodsMapper;
 import com.ledao.mapper.MiaoShaGoodsMapper;
 import com.ledao.mapper.OrderMapper;
+import com.ledao.rabbitmq.RabbitMQProducerService;
 import com.ledao.service.OrderService;
 import com.ledao.util.RedisUtil;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Resource
     private MiaoShaGoodsMapper miaoShaGoodsMapper;
 
+    @Resource
+    private RabbitMQProducerService rabbitMQProducerService;
+
     @Override
     public List<Order> list(Map<String, Object> map) {
         return orderMapper.list(map);
@@ -41,12 +45,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     @Transactional(rollbackFor = {Exception.class})
     public int add(Order order) {
+        //秒杀商品库存-1
         miaoShaGoodsMapper.reduceStock(order.getMiaoShaGoodsId());
+        //秒杀商品对应商品库存-1
         goodsMapper.reduceStock(order.getGoodsId());
         int result = orderMapper.add(order);
+        //将订单号放进延时消息队列
+        Integer orderId = order.getId();
+        rabbitMQProducerService.sendMessageDelayed("order_" + orderId, 1000 * 20);
         Gson gson = new Gson();
         String key = "miaoShaGoods_" + order.getMiaoShaGoodsId();
         MiaoShaGoods miaoShaGoods = gson.fromJson(RedisUtil.getKeyValue(key), MiaoShaGoods.class);
+        //Redis的秒杀商品剩余数量-1
         miaoShaGoods.setStock(miaoShaGoods.getStock() - 1);
         RedisUtil.setKey(key, gson.toJson(miaoShaGoods));
         //获取秒杀时长

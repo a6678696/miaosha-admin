@@ -15,4 +15,12 @@ public interface RabbitMQProducerService {
      * @param infotmation
      */
     void sendInformation(String infotmation);
+
+    /**
+     * 发送延时消息
+     *
+     * @param message 消息内容
+     * @param delayTime 延时时间,单位为毫秒
+     */
+    void sendMessageDelayed(String message, Integer delayTime);
 }

@@ -23,4 +23,9 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     public Goods findById(Integer id) {
         return goodsMapper.findById(id);
     }
+
+    @Override
+    public int update(Goods goods) {
+        return goodsMapper.updateById(goods);
+    }
 }

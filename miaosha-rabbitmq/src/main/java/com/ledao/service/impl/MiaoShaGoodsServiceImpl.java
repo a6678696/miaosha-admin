@@ -45,4 +45,9 @@ public class MiaoShaGoodsServiceImpl extends ServiceImpl<MiaoShaGoodsMapper, Mia
         }
         return miaoShaGoods;
     }
+
+    @Override
+    public int update(MiaoShaGoods miaoShaGoods) {
+        return miaoShaGoodsMapper.updateById(miaoShaGoods);
+    }
 }

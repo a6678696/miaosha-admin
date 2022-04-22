@@ -19,4 +19,12 @@ public interface GoodsService extends IService<Goods> {
      * @return
      */
     Goods findById(Integer id);
+
+    /**
+     * 修改商品
+     *
+     * @param goods
+     * @return
+     */
+    int update(Goods goods);
 }

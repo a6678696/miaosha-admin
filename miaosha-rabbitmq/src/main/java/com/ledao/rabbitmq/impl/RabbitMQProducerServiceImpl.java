@@ -22,4 +22,12 @@ public class RabbitMQProducerServiceImpl implements RabbitMQProducerService {
     public void sendInformation(String infotmation) {
         amqpTemplate.convertAndSend(RabbitMQConfig.DIRECT_EXCHANGE, RabbitMQConfig.DIRECT_ROUTINGKEY, infotmation);
     }
+
+    @Override
+    public void sendMessageDelayed(String message, Integer delayTime) {
+        amqpTemplate.convertAndSend(RabbitMQConfig.DELAYED_EXCHANGE, RabbitMQConfig.DELAYED_ROUTING_KEY, message, a -> {
+            a.getMessageProperties().setDelay(delayTime);
+            return a;
+        });
+    }
 }

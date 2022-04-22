@@ -45,7 +45,7 @@ public class Order implements Serializable {
     @TableField(value = "miaoShaGoodsId")
     private Integer miaoShaGoodsId;
     /**
-     * 支付状态,0代表未支付,1代表已支付
+     * 支付状态,0代表未支付,1代表已支付,2代表已取消
      */
     @TableField(value = "payStatus")
     private Integer payStatus;

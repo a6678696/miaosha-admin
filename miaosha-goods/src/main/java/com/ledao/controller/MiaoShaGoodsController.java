@@ -38,6 +38,7 @@ public class MiaoShaGoodsController {
             map.put("userId", userId);
             map.put("miaoShaGoodsId", miaoShaGoods.getId());
             Order order = orderService.findByUserIdAndMiaoShaGoodsId(map);
+            //已经秒杀过就不显示这个商品
             if (order != null) {
                 miaoShaGoodsList.remove(miaoShaGoods);
                 i--;

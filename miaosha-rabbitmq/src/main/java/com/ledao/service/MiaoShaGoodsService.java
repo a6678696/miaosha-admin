@@ -26,4 +26,12 @@ public interface MiaoShaGoodsService extends IService<MiaoShaGoods> {
      * @return
      */
     MiaoShaGoods findById(Integer id);
+
+    /**
+     * 修改秒杀商品
+     *
+     * @param miaoShaGoods
+     * @return
+     */
+    int update(MiaoShaGoods miaoShaGoods);
 }

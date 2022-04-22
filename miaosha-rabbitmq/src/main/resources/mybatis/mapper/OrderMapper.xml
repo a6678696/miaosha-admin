@@ -40,7 +40,7 @@
           and miaoShaGoodsId = #{miaoShaGoodsId}
     </select>
 
-    <insert id="add" parameterType="com.ledao.entity.Order">
+    <insert id="add" parameterType="com.ledao.entity.Order" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert into t_order (createTime, goodsId, payStatus, num, userId, price, miaoShaGoodsId)
         values (now(), #{goodsId}, #{payStatus}, #{num}, #{userId}, #{price}, #{miaoShaGoodsId});
     </insert>

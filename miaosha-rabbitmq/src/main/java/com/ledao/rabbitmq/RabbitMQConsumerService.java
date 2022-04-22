@@ -15,4 +15,11 @@ public interface RabbitMQConsumerService {
      * @param message
      */
     void handleMiaoShaRequst(String message);
+
+    /**
+     * 监听队列接收delayed消息
+     *
+     * @param message
+     */
+    void receiveMessageDelayed(String message);
 }
