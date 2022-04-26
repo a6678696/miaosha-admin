@@ -52,7 +52,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         int result = orderMapper.add(order);
         //将订单号放进延时消息队列
         Integer orderId = order.getId();
-        rabbitMQProducerService.sendMessageDelayed("order_" + orderId, 1000 * 20);
+        rabbitMQProducerService.sendMessageDelayed("order_" + orderId, 1000 * 60 * 30);
         Gson gson = new Gson();
         String key = "miaoShaGoods_" + order.getMiaoShaGoodsId();
         MiaoShaGoods miaoShaGoods = gson.fromJson(RedisUtil.getKeyValue(key), MiaoShaGoods.class);
