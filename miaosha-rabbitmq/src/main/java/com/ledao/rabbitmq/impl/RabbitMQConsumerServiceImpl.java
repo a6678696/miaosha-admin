@@ -40,28 +40,25 @@ public class RabbitMQConsumerServiceImpl implements RabbitMQConsumerService {
     @Override
     @RabbitListener(queues = {RabbitMQConfig.DIRECT_QUEUE})
     public void handleMiaoShaRequst(String message) {
-        System.out.println(message+": 消费者1");
+        System.out.println(message + ": 消费者1");
         Gson gson = new Gson();
         OrderVo orderVo = gson.fromJson(message, OrderVo.class);
         Map<String, Object> map = new HashMap<>(16);
         map.put("userId", orderVo.getUserId());
         map.put("miaoShaGoodsId", orderVo.getMiaoShaGoodsId());
         MiaoShaGoods miaoShaGoods = miaoShaGoodsService.findById(orderVo.getMiaoShaGoodsId());
-        //判断是否已经过了秒杀时间,时间过了不可以秒杀
-        if (miaoShaGoods.getEndTime().getTime() - System.currentTimeMillis() >= 0) {
-            //判断秒杀商品的数量是否大于0,不大于0不可以秒杀
-            if (miaoShaGoods.getStock() > 0) {
-                //判断用户是否重复秒杀,已经秒杀过不能秒杀,即使订单因为30分钟未支付被取消了也不能重新秒杀
-                if (orderService.findByUserIdAndMiaoShaGoodsId(map) == null) {
-                    Order order = new Order();
-                    order.setGoodsId(orderVo.getGoodsId());
-                    order.setUserId(orderVo.getUserId());
-                    order.setPrice(orderVo.getPrice());
-                    order.setMiaoShaGoodsId(orderVo.getMiaoShaGoodsId());
-                    order.setPayStatus(0);
-                    order.setNum(1);
-                    orderService.add(order);
-                }
+        //判断秒杀商品的数量是否大于0,不大于0不可以秒杀
+        if (miaoShaGoods.getStock() > 0) {
+            //判断用户是否重复秒杀,已经秒杀过不能秒杀,即使订单因为30分钟未支付被取消了也不能重新秒杀
+            if (orderService.findByUserIdAndMiaoShaGoodsId(map) == null) {
+                Order order = new Order();
+                order.setGoodsId(orderVo.getGoodsId());
+                order.setUserId(orderVo.getUserId());
+                order.setPrice(orderVo.getPrice());
+                order.setMiaoShaGoodsId(orderVo.getMiaoShaGoodsId());
+                order.setPayStatus(0);
+                order.setNum(1);
+                orderService.add(order);
             }
         }
     }
@@ -82,7 +79,7 @@ public class RabbitMQConsumerServiceImpl implements RabbitMQConsumerService {
             MiaoShaGoods miaoShaGoods = miaoShaGoodsService.findById(order.getMiaoShaGoodsId());
             //如果秒杀时间还没过,释放秒杀商品库存
             if (miaoShaGoods.getEndTime().getTime() - System.currentTimeMillis() >= 0) {
-                miaoShaGoods.setStock(miaoShaGoods.getStock()+order.getNum());
+                miaoShaGoods.setStock(miaoShaGoods.getStock() + order.getNum());
                 miaoShaGoodsService.update(miaoShaGoods);
                 Gson gson = new Gson();
                 String key = "miaoShaGoods_" + order.getMiaoShaGoodsId();

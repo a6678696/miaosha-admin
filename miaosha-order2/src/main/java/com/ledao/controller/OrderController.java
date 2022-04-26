@@ -61,13 +61,15 @@ public class OrderController {
         if (orderVo.getId() == null) {
             System.out.println("------------开始秒杀-----------");
             MiaoShaGoods miaoShaGoods = miaoShaGoodsService.findById(orderVo.getMiaoShaGoodsId());
-            //当前秒杀商品的库存大于0时才放进消息队列
-            if (miaoShaGoods.getStock()>0) {
-                rabbitMQFeignService.sendInformation(RedisUtil.entityToJson(orderVo));
-                //rabbitMQProducerService.sendInformation(RedisUtil.entityToJson(orderVo));
-                key = 1;
-            }else {
-                resultMap.put("errorInfo", "你手慢了,该商品已经被秒杀完了!!");
+            //判断是否已经过了秒杀时间,时间过了不可以秒杀
+            if (miaoShaGoods.getEndTime().getTime() - System.currentTimeMillis() >= 0) {
+                //当前秒杀商品的库存大于0时才放进消息队列
+                if (miaoShaGoods.getStock() > 0) {
+                    rabbitMQFeignService.sendInformation(RedisUtil.entityToJson(orderVo));
+                    key = 1;
+                } else {
+                    resultMap.put("errorInfo", "你手慢了,该商品已经被秒杀完了!!");
+                }
             }
         } else {
             Order order = orderService.findById(orderVo.getId());
