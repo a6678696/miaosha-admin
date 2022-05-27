@@ -1,4 +1,4 @@
-## 有问题请到[Issues](https://github.com/a6678696/miaosha-admin/issues)下留言，，如果本项目对你有帮助，就请你Star一下吧!!
+## 有问题请到[Issues](https://github.com/a6678696/miaosha-admin/issues)下留言，如果本项目对你有帮助，就请你Star一下吧!!项目详情查看博客：https://blog.zoutl.cn/492.html
 
 ### 提问要求
 查看博客：https://blog.zoutl.cn/6670.html ，一定要看，不规范的提问会让我不舒服，会导致我看到你的问题也不想回答
