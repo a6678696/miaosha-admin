@@ -35,7 +35,7 @@
 | Mybatis-Plus |         持久层框架          |
 |   MySQL5.6   |           数据库            |
 |    Redis     |         缓存中间件          |
-|   RabbitMQ   |          消息队列           |
+|   RabbitMQ   |          消息队列（需要安装延迟队列的插件：[RabbitMQ 实现延时队列](https://blog.zoutl.cn/356.html) ）           |
 |    Vue.js    |     前端JavaScript框架      |
 |   Element    | 基于 Vue 2.0 的桌面端组件库 |
 
